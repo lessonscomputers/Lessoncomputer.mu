@@ -112,11 +112,12 @@ function GradeDialog({ grade, onDone }: { grade?: Grade; onDone: () => void }) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className="flex flex-col max-h-[90vh] overflow-hidden">
+        <DialogHeader className="shrink-0">
           <DialogTitle>{grade ? 'Edit Grade' : 'Add Grade'}</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 min-h-0 mt-2">
+        <div className="overflow-y-auto flex-1 pr-1 space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Name *</Label>
@@ -218,7 +219,9 @@ function GradeDialog({ grade, onDone }: { grade?: Grade; onDone: () => void }) {
             </div>
           </div>
 
-          <div className="flex gap-2 pt-2">
+        </div>
+
+          <div className="flex gap-2 pt-4 shrink-0 border-t border-border mt-2">
             <Button type="submit" disabled={loading} className="flex-1 bg-primary text-primary-foreground hover:bg-accent">
               {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
               {grade ? 'Save' : 'Create'}

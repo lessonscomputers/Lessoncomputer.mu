@@ -144,9 +144,9 @@ export async function Footer() {
 
         <div className="border-t border-border pt-7 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
           <div className="text-center sm:text-left space-y-0.5">
-            <p>&copy; {new Date().getFullYear()} [REGISTERED COMPANY NAME]. All rights reserved.</p>
-            <p>Business Registration Number: [BRN]</p>
-            <p>Registered address: [FULL ADDRESS], Mauritius</p>
+            <p>&copy; {new Date().getFullYear()} Lesson Computer Ltd. All rights reserved.</p>
+            <p>Registered in Mauritius | Business Registration No.: C24215107</p>
+            <p>Registered Address: Belvedere Road, Brisée Verdière, 1402-03, Mauritius</p>
           </div>
           <p>Taught from Mauritius. Open to students worldwide.</p>
         </div>
