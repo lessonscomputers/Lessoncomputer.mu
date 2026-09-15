@@ -39,14 +39,14 @@ export function GradesSection({ grades = PLACEHOLDER_GRADES, embedded = false }:
           <div>
             <p className="text-xs font-semibold tracking-[0.15em] text-primary uppercase mb-3">Our Curriculum</p>
             <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground leading-tight">
-              Choose your grade
+              Choose your Courses
             </h2>
           </div>
           <Link
             href="/grades"
             className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-foreground/70 hover:text-primary lc-transition"
           >
-            View all grades <ArrowRight className="w-3.5 h-3.5" />
+            View all courses <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
@@ -54,7 +54,7 @@ export function GradesSection({ grades = PLACEHOLDER_GRADES, embedded = false }:
 
         <div className="mt-8 text-center sm:hidden">
           <Link href="/grades" className="text-sm font-medium text-primary hover:underline">
-            View all grades →
+            View all courses →
           </Link>
         </div>
       </div>

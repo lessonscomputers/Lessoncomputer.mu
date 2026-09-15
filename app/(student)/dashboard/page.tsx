@@ -6,7 +6,7 @@ import { JoinLiveClassButton } from '@/components/lc/join-live-class-button'
 import { LiveClassCountdown } from '@/components/lc/live-class-countdown'
 import { DashboardGradeFilter } from '@/components/lc/dashboard-grade-filter'
 import {
-  ArrowRight, BookOpen, Radio, Bell, PlayCircle, GraduationCap, TrendingUp,
+  ArrowRight, BookOpen, Radio, Bell, PlayCircle, GraduationCap, TrendingUp, AlertCircle,
 } from 'lucide-react'
 
 export const metadata = { title: 'Dashboard' }
@@ -21,12 +21,12 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
   const [{ data: profileRaw }, { data: subsRaw }, { data: watchedRaw }] = await Promise.all([
     (supabase as any)
       .from('profiles')
-      .select('full_name, grade_id, parent_phone, grade:grades(id, name, slug, color, live_subscription_enabled)')
+      .select('full_name, grade_id, parent_phone, grade:grades(id, name, slug, color, live_subscription_enabled, notice_text, notice_video_url)')
       .eq('id', user!.id)
       .single(),
     (supabase as any)
       .from('student_subscriptions')
-      .select('package_id, is_recurring, subscription_type, valid_from, valid_until, package:subscription_packages(id, name, package_type, month, year, grade:grades(id, name, slug, color, live_subscription_enabled), subscription_package_chapters(chapter_id))')
+      .select('package_id, is_recurring, subscription_type, valid_from, valid_until, package:subscription_packages(id, name, package_type, month, year, grade:grades(id, name, slug, color, live_subscription_enabled, notice_text, notice_video_url), subscription_package_chapters(chapter_id))')
       .eq('student_id', user!.id)
       .eq('status', 'active'),
     (supabase as any)
@@ -35,7 +35,7 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
       .eq('student_id', user!.id),
   ])
 
-  const profile = profileRaw as { full_name: string | null; grade_id: string | null; parent_phone: string | null; grade: { id: string; name: string; slug: string; color: string; live_subscription_enabled: boolean } | null } | null
+  const profile = profileRaw as { full_name: string | null; grade_id: string | null; parent_phone: string | null; grade: { id: string; name: string; slug: string; color: string; live_subscription_enabled: boolean; notice_text: string | null; notice_video_url: string | null } | null } | null
   const firstName = profile?.full_name?.split(' ')[0] ?? 'there'
   const hasParentPhone = !!profile?.parent_phone
 
@@ -43,7 +43,7 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
 
   // Every grade the student is actively subscribed in. A student can hold live subscriptions
   // for more than one grade; the dashboard shows one grade at a time via ?grade=<id>.
-  const enrolledGrades: { id: string; name: string; slug: string; color: string; live_subscription_enabled: boolean }[] = []
+  const enrolledGrades: { id: string; name: string; slug: string; color: string; live_subscription_enabled: boolean; notice_text?: string | null; notice_video_url?: string | null }[] = []
   const seenGrade = new Set<string>()
   for (const s of allSubs) {
     const g = s.package?.grade
@@ -192,6 +192,30 @@ export default async function StudentDashboardPage({ searchParams }: { searchPar
           </div>
           <ArrowRight className="w-4 h-4 text-primary shrink-0" />
         </Link>
+      )}
+
+      {/* Grade notice — shown only when admin has configured a notice for this grade */}
+      {grade && ((grade as any).notice_text || (grade as any).notice_video_url) && (
+        <div className="rounded-xl border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 p-5 space-y-3">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+            <span className="text-sm font-semibold text-amber-800 dark:text-amber-300">Notice from your teacher</span>
+          </div>
+          {(grade as any).notice_text && (
+            <p className="text-sm text-amber-900 dark:text-amber-200 whitespace-pre-line">{(grade as any).notice_text}</p>
+          )}
+          {(grade as any).notice_video_url && (
+            <div className="rounded-lg overflow-hidden border border-amber-200 dark:border-amber-800 aspect-video w-full">
+              <iframe
+                src={(grade as any).notice_video_url}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="Teacher notice video"
+              />
+            </div>
+          )}
+        </div>
       )}
 
       {/* Access widgets: live join + video access */}
