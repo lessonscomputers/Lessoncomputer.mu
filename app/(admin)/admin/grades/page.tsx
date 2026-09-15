@@ -40,6 +40,8 @@ const schema = z.object({
     (v) => (v === '' || v === null || v === undefined ? null : Number(v)),
     z.number().int().min(1, 'At least 1 week').nullable()
   ),
+  notice_text: z.string().optional().or(z.literal('')),
+  notice_video_url: z.string().url('Must be a valid URL').optional().or(z.literal('')),
 })
 
 type FormData = z.infer<typeof schema>
@@ -67,6 +69,8 @@ function GradeDialog({ grade, onDone }: { grade?: Grade; onDone: () => void }) {
       live_subscription_price: (grade as any)?.live_subscription_price ?? 0,
       live_subscription_enabled: (grade as any)?.live_subscription_enabled ?? false,
       video_validity_weeks: (grade as any)?.video_validity_weeks ?? ('' as any),
+      notice_text: (grade as any)?.notice_text ?? '',
+      notice_video_url: (grade as any)?.notice_video_url ?? '',
     },
   })
 
@@ -190,6 +194,27 @@ function GradeDialog({ grade, onDone }: { grade?: Grade; onDone: () => void }) {
                 How long a purchased video package stays accessible for this grade. Blank = unlimited (never expires).
                 Applies to new purchases only.
               </p>
+            </div>
+          </div>
+
+          <div className="pt-2">
+            <p className="text-sm font-semibold mb-3">Student Dashboard Notice</p>
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <Label>Notice Text</Label>
+                <Textarea
+                  placeholder="e.g. Monthly payment due by the 28th. Pay via bank transfer to …"
+                  rows={3}
+                  {...register('notice_text')}
+                />
+                <p className="text-xs text-muted-foreground">Shown permanently on every enrolled student&apos;s dashboard. Leave blank to hide.</p>
+              </div>
+              <div className="space-y-2">
+                <Label>Notice Video URL (optional)</Label>
+                <Input placeholder="https://…" {...register('notice_video_url')} />
+                {errors.notice_video_url && <p className="text-xs text-destructive">{errors.notice_video_url.message}</p>}
+                <p className="text-xs text-muted-foreground">If set, the video plays inline on the dashboard (no redirect). Works with YouTube, Vimeo, or any embeddable URL.</p>
+              </div>
             </div>
           </div>
 
