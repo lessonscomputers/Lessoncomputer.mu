@@ -48,9 +48,9 @@ export default function TermsPage() {
         <section>
           <h2 className="text-lg font-semibold text-foreground mb-2">4. Intellectual Property</h2>
           <p>
-            All content on LessonComputer.mu is the sole property of [REGISTERED COMPANY NAME],
-            Business Registration Number [BRN], registered at [ADDRESS], Mauritius (&quot;the
-            Company&quot;). This includes, without limitation, all video lessons, live classes,
+            All content on LessonComputer.mu is the sole property of Lesson Computer Ltd,
+            Business Registration Number C24215107, registered at Belvedere Road, Brisée Verdière,
+            1402-03, Mauritius (&quot;the Company&quot;). This includes, without limitation, all video lessons, live classes,
             course materials, documents, revision notes, text, graphics, logos, trademarks, designs,
             and software. No content may be copied, reproduced, redistributed, resold, publicly
             displayed, or otherwise used without the Company's prior written consent. Unauthorised
@@ -116,8 +116,8 @@ export default function TermsPage() {
           <h2 className="text-lg font-semibold text-foreground mb-2">11. Contact</h2>
           <p>
             Questions about these terms? Email us at{' '}
-            <a href="mailto:support@lessoncomputer.mu" className="text-primary hover:underline">
-              support@lessoncomputer.mu
+            <a href="mailto:lessonscomputers@gmail.com" className="text-primary hover:underline">
+              lessonscomputers@gmail.com
             </a>
             .
           </p>

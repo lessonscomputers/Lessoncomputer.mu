@@ -9,7 +9,7 @@ export function TeacherSection() {
         <div className="flex flex-col sm:flex-row items-center gap-8 sm:gap-10 bg-card rounded-2xl border border-border/60 lc-shadow p-6 sm:p-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/placeholder-user.jpg"
+            src="/Teacher.png"
             alt="Mr Muddhoo Shoheb, Cambridge Computer Science teacher"
             className="w-44 h-44 sm:w-56 sm:h-56 rounded-2xl object-cover border-4 border-primary/20 shrink-0"
           />

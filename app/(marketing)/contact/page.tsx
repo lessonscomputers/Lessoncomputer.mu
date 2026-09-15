@@ -48,8 +48,8 @@ export default async function ContactPage() {
           </div>
           <h3 className="font-semibold mb-1">Email</h3>
           <p className="text-sm text-muted-foreground">
-            <a href="mailto:support@lessoncomputer.mu" className="hover:text-primary transition-colors">
-              support@lessoncomputer.mu
+            <a href="mailto:lessonscomputers@gmail.com" className="hover:text-primary transition-colors">
+              lessonscomputers@gmail.com
             </a>
           </p>
         </div>
@@ -82,7 +82,7 @@ export default async function ContactPage() {
       <div className="max-w-xl mx-auto mb-10 rounded-xl border border-border/60 bg-card p-5 flex items-start gap-3">
         <Clock className="w-5 h-5 text-primary shrink-0 mt-0.5" />
         <div className="text-sm text-muted-foreground leading-relaxed">
-          <p className="text-foreground font-medium mb-0.5">Office hours: Monday – Saturday, 9:00 AM – 5:00 PM (MUT, Mauritius time, GMT+4)</p>
+          <p className="text-foreground font-medium mb-0.5">Office hours: Monday – Saturday, 9:00 AM – 5:00 PM (MRU, Mauritius time, GMT+4)</p>
           <p>We reply within 24 hours, Monday to Saturday.</p>
           {whatsappDigits && (
             <p className="mt-2">

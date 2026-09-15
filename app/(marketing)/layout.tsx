@@ -45,14 +45,14 @@ export default async function MarketingLayout({
 
   const currency = await getCurrencyInfo()
 
-  let grades: { name: string; slug: string }[] = []
+  let grades: { name: string; slug: string; is_mauritius_only: boolean }[] = []
   try {
     const { data } = await supabase
       .from('grades')
-      .select('name, slug')
+      .select('name, slug, is_mauritius_only')
       .eq('is_active', true)
       .order('order_index', { ascending: true })
-    grades = (data ?? []) as { name: string; slug: string }[]
+    grades = (data ?? []) as { name: string; slug: string; is_mauritius_only: boolean }[]
   } catch { /* fall back to empty */ }
 
   return (
