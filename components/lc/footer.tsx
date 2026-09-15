@@ -186,7 +186,7 @@ export async function Footer() {
             <p>Registered in Mauritius | Business Registration No.: C24215107</p>
             <p>Registered Address: Belvedere Road, Brisée Verdière, 1402-03, Mauritius</p>
           </div>
-          <p>Developed by Salman. Contact on 5822 2428</p>
+          <p>Developed by Salman. Contact on +230 5822 2428</p>
         </div>
       </div>
     </footer>

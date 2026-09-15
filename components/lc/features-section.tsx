@@ -39,7 +39,7 @@ export function FeaturesSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Boty-style section header */}
-        <div className="max-w-xl mb-14">
+        <div className="text-center mb-14">
           <p className="text-xs font-semibold tracking-[0.15em] text-primary uppercase mb-3">Why LessonComputer</p>
           <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground leading-tight">
             Everything you need to succeed
