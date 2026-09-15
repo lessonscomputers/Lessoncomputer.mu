@@ -13,13 +13,14 @@ const DEFAULT_GRADES: { name: string; slug: string }[] = []
 
 interface HeaderProps {
   user?: { email?: string; role?: string } | null
-  grades?: { name: string; slug: string }[]
-  // Shifts the header down below the scrolling top banner (TopBanner), when it's shown.
+  grades?: { name: string; slug: string; is_mauritius_only?: boolean }[]
   hasBanner?: boolean
 }
 
 export function Header({ user, grades, hasBanner = false }: HeaderProps) {
   const gradeList = grades && grades.length > 0 ? grades : DEFAULT_GRADES
+  const mauritiusGrades = gradeList.filter((g) => g.is_mauritius_only !== false)
+  const internationalGrades = gradeList.filter((g) => g.is_mauritius_only === false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [gradesOpen, setGradesOpen] = useState(false)
   const gradesRef = useRef<HTMLDivElement>(null)
@@ -65,17 +66,29 @@ export function Header({ user, grades, hasBanner = false }: HeaderProps) {
                 Courses <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${gradesOpen ? 'rotate-180' : ''}`} />
               </button>
               {gradesOpen && gradeList.length > 0 && (
-                <div className="absolute top-full left-0 mt-1 w-44 bg-card border border-border rounded-xl lc-shadow py-1.5 animate-scale-fade-in z-20 max-h-[70vh] overflow-y-auto">
-                  {gradeList.map((g) => (
-                    <Link
-                      key={g.slug}
-                      href={`/grades/${g.slug}`}
-                      onClick={() => setGradesOpen(false)}
-                      className="block px-4 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-secondary lc-transition"
-                    >
-                      {g.name}
-                    </Link>
-                  ))}
+                <div className="absolute top-full left-0 mt-1 w-52 bg-card border border-border rounded-xl lc-shadow py-1.5 animate-scale-fade-in z-20 max-h-[70vh] overflow-y-auto">
+                  {mauritiusGrades.length > 0 && (
+                    <>
+                      <p className="px-4 pt-2 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">Mauritius</p>
+                      {mauritiusGrades.map((g) => (
+                        <Link key={g.slug} href={`/grades/${g.slug}`} onClick={() => setGradesOpen(false)}
+                          className="block px-4 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-secondary lc-transition">
+                          {g.name}
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                  {internationalGrades.length > 0 && (
+                    <>
+                      <p className={`px-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-widest ${mauritiusGrades.length > 0 ? 'pt-3 border-t border-border/60 mt-1' : 'pt-2'}`}>International</p>
+                      {internationalGrades.map((g) => (
+                        <Link key={g.slug} href={`/grades/${g.slug}`} onClick={() => setGradesOpen(false)}
+                          className="block px-4 py-2 text-sm text-foreground/70 hover:text-foreground hover:bg-secondary lc-transition">
+                          {g.name}
+                        </Link>
+                      ))}
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -137,14 +150,26 @@ export function Header({ user, grades, hasBanner = false }: HeaderProps) {
                 {item.label}
               </Link>
             ))}
-            {gradeList.length > 0 && (
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest px-3 pt-3 pb-1">Courses</p>
+            {mauritiusGrades.length > 0 && (
+              <>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest px-3 pt-3 pb-1">Courses — Mauritius</p>
+                {mauritiusGrades.map((g) => (
+                  <Link key={g.slug} href={`/grades/${g.slug}`} className="block px-3 py-2.5 text-sm hover:bg-secondary rounded-xl lc-transition" onClick={() => setMobileOpen(false)}>
+                    {g.name}
+                  </Link>
+                ))}
+              </>
             )}
-            {gradeList.map((g) => (
-              <Link key={g.slug} href={`/grades/${g.slug}`} className="block px-3 py-2.5 text-sm hover:bg-secondary rounded-xl lc-transition" onClick={() => setMobileOpen(false)}>
-                {g.name}
-              </Link>
-            ))}
+            {internationalGrades.length > 0 && (
+              <>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-widest px-3 pt-3 pb-1">Courses — International</p>
+                {internationalGrades.map((g) => (
+                  <Link key={g.slug} href={`/grades/${g.slug}`} className="block px-3 py-2.5 text-sm hover:bg-secondary rounded-xl lc-transition" onClick={() => setMobileOpen(false)}>
+                    {g.name}
+                  </Link>
+                ))}
+              </>
+            )}
             <div className="border-t border-border my-3 pt-3 flex gap-2">
               {user ? (
                 <>

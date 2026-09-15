@@ -52,8 +52,8 @@ export default function RefundsPage() {
           <h2 className="text-lg font-semibold mb-3">5. How to Request a Refund</h2>
           <p>
             To request a refund, please email us at{' '}
-            <a href="mailto:support@lessoncomputer.mu" className="text-primary hover:underline">
-              support@lessoncomputer.mu
+            <a href="mailto:lessonscomputers@gmail.com" className="text-primary hover:underline">
+              lessonscomputers@gmail.com
             </a>{' '}
             with your order details and the reason for your request. We aim to respond within 2 business days.
           </p>
@@ -70,8 +70,8 @@ export default function RefundsPage() {
           <h2 className="text-lg font-semibold mb-3">7. Contact</h2>
           <p>
             Questions about this policy? Reach us at{' '}
-            <a href="mailto:support@lessoncomputer.mu" className="text-primary hover:underline">
-              support@lessoncomputer.mu
+            <a href="mailto:lessonscomputers@gmail.com" className="text-primary hover:underline">
+              lessonscomputers@gmail.com
             </a>
             .
           </p>

@@ -65,8 +65,8 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-semibold text-foreground mb-2">5. Your Rights</h2>
           <p>
             You may request deletion of your account and personal data at any time by emailing us at{' '}
-            <a href="mailto:support@lessoncomputer.mu" className="text-primary hover:underline">
-              support@lessoncomputer.mu
+            <a href="mailto:lessonscomputers@gmail.com" className="text-primary hover:underline">
+              lessonscomputers@gmail.com
             </a>
             . You also have the right to complain to the Data Protection Commissioner in Mauritius if
             you believe your data has been mishandled.
@@ -76,10 +76,10 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-lg font-semibold text-foreground mb-2">6. Data Controller, Retention &amp; Minors</h2>
           <p>
-            The data controller for LessonComputer.mu is [REGISTERED COMPANY NAME], registered at
-            [FULL ADDRESS], Mauritius, contactable at{' '}
-            <a href="mailto:support@lessoncomputer.mu" className="text-primary hover:underline">
-              support@lessoncomputer.mu
+            The data controller for LessonComputer.mu is Lesson Computer Ltd (BRN C24215107), registered at
+            Belvedere Road, Brisée Verdière, 1402-03, Mauritius, contactable at{' '}
+            <a href="mailto:lessonscomputers@gmail.com" className="text-primary hover:underline">
+              lessonscomputers@gmail.com
             </a>
             . We process your data on the basis of performing our contract with you (account and
             course access), our legitimate interests (improving the platform), and, where applicable,
@@ -94,8 +94,8 @@ export default function PrivacyPage() {
           <h2 className="text-lg font-semibold text-foreground mb-2">7. Contact</h2>
           <p>
             For any privacy-related questions, please contact us at{' '}
-            <a href="mailto:support@lessoncomputer.mu" className="text-primary hover:underline">
-              support@lessoncomputer.mu
+            <a href="mailto:lessonscomputers@gmail.com" className="text-primary hover:underline">
+              lessonscomputers@gmail.com
             </a>
             .
           </p>

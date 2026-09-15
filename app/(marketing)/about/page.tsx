@@ -42,7 +42,7 @@ export default async function AboutPage() {
       <div className="text-center mb-10">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/placeholder-user.jpg"
+          src="/Teacher.png"
           alt="Mr Muddhoo Shoheb, Cambridge Computer Science teacher"
           className="w-40 h-40 rounded-full object-cover mx-auto mb-5 border-4 border-primary/20"
         />
@@ -67,6 +67,7 @@ export default async function AboutPage() {
           <li>• Degree: BSc Electronics and Computer Science</li>
           <li>• Professional certification: PGCE</li>
           <li>• Currently teaching Computer Science at Islamic Cultural College, Port-Louis, Mauritius</li>
+          <li>• Location: Belvedere Road, Brisée Verdière, 1402-03, Mauritius</li>
         </ul>
       </section>
 

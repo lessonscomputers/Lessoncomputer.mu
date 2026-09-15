@@ -48,35 +48,44 @@ export async function Footer() {
   // Grades in the footer follow the configured active grades (fall back to the static
   // list if the query fails).
   let gradeLinks = GRADE_LINKS
+  let mauritiusLinks: { name: string; href: string }[] = []
+  let internationalLinks: { name: string; href: string }[] = []
   try {
     const supabase = await createClient()
     const { data } = await supabase
       .from('grades')
-      .select('name, slug')
+      .select('name, slug, is_mauritius_only')
       .eq('is_active', true)
       .order('order_index', { ascending: true })
     if (data && data.length > 0) {
-      gradeLinks = (data as { name: string; slug: string }[]).map((g) => ({ name: g.name, href: `/grades/${g.slug}` }))
+      gradeLinks = (data as { name: string; slug: string; is_mauritius_only: boolean }[]).map((g) => ({ name: g.name, href: `/grades/${g.slug}` }))
+      mauritiusLinks = (data as { name: string; slug: string; is_mauritius_only: boolean }[])
+        .filter((g) => g.is_mauritius_only !== false)
+        .map((g) => ({ name: g.name, href: `/grades/${g.slug}` }))
+      internationalLinks = (data as { name: string; slug: string; is_mauritius_only: boolean }[])
+        .filter((g) => g.is_mauritius_only === false)
+        .map((g) => ({ name: g.name, href: `/grades/${g.slug}` }))
     }
   } catch { /* keep fallback */ }
+  const hasSplit = mauritiusLinks.length > 0 || internationalLinks.length > 0
 
   const hasSocial = settings?.facebook_url || settings?.instagram_url || settings?.tiktok_url
 
   return (
     <footer className="border-t border-border bg-secondary/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 mb-12">
           <div className="col-span-2 md:col-span-1">
             <Logo className="mb-5" />
             <p className="text-sm text-muted-foreground leading-relaxed mb-5">
               Cambridge Computer Science and ICT tuition. Taught from Mauritius. Open to students worldwide.
             </p>
             <a
-              href="mailto:support@lessoncomputer.mu"
+              href="mailto:lessonscomputers@gmail.com"
               className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary lc-transition"
             >
               <Mail className="w-4 h-4" />
-              support@lessoncomputer.mu
+              lessonscomputers@gmail.com
             </a>
 
             {hasSocial && (
@@ -119,8 +128,40 @@ export async function Footer() {
             )}
           </div>
 
+          {hasSplit ? (
+            <>
+              {mauritiusLinks.length > 0 && (
+                <div>
+                  <h4 className="font-semibold text-sm mb-4">Courses — Mauritius</h4>
+                  <ul className="space-y-2.5">
+                    {mauritiusLinks.map((link) => (
+                      <li key={link.href}><Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground lc-transition">{link.name}</Link></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {internationalLinks.length > 0 && (
+                <div>
+                  <h4 className="font-semibold text-sm mb-4">Courses — International</h4>
+                  <ul className="space-y-2.5">
+                    {internationalLinks.map((link) => (
+                      <li key={link.href}><Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground lc-transition">{link.name}</Link></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </>
+          ) : (
+            <div>
+              <h4 className="font-semibold text-sm mb-4">Courses</h4>
+              <ul className="space-y-2.5">
+                {gradeLinks.map((link) => (
+                  <li key={link.href}><Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground lc-transition">{link.name}</Link></li>
+                ))}
+              </ul>
+            </div>
+          )}
           {[
-            { title: 'Courses', links: gradeLinks },
             { title: 'Company', links: COMPANY_LINKS },
             { title: 'Legal', links: LEGAL_LINKS },
           ].map((col) => (
@@ -129,10 +170,7 @@ export async function Footer() {
               <ul className="space-y-2.5">
                 {col.links.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted-foreground hover:text-foreground lc-transition"
-                    >
+                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground lc-transition">
                       {link.name}
                     </Link>
                   </li>
@@ -148,7 +186,7 @@ export async function Footer() {
             <p>Registered in Mauritius | Business Registration No.: C24215107</p>
             <p>Registered Address: Belvedere Road, Brisée Verdière, 1402-03, Mauritius</p>
           </div>
-          <p>Taught from Mauritius. Open to students worldwide.</p>
+          <p>Developed by Salman. Contact on 5822 2428</p>
         </div>
       </div>
     </footer>
