@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/server'
 import {
-  GraduationCap, BookOpen, Users, Video, TrendingUp, Globe, Mail,
+  GraduationCap, BookOpen, Users, Video, Globe, Mail,
 } from 'lucide-react'
 
 export const metadata: Metadata = {
@@ -20,9 +20,10 @@ export const metadata: Metadata = {
 }
 
 const SYLLABUSES = [
+  { code: '9618', name: 'AS & A Level Computer Science', years: '15+ years' },
   { code: '0478', name: 'IGCSE Computer Science', years: '15+ years' },
   { code: '2210', name: 'O Level Computer Science', years: '15+ years' },
-  { code: '9618', name: 'AS & A Level Computer Science', years: '10+ years' },
+  { code: 'Grade 7, 8 & 9 (NCE)', name: 'ICT', years: '15+ years' },
 ]
 
 export default async function AboutPage() {
@@ -42,10 +43,10 @@ export default async function AboutPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/placeholder-user.jpg"
-          alt="Shoheb Muddhoo, Cambridge Computer Science teacher"
-          className="w-32 h-32 rounded-full object-cover mx-auto mb-5 border-4 border-primary/20"
+          alt="Mr Muddhoo Shoheb, Cambridge Computer Science teacher"
+          className="w-40 h-40 rounded-full object-cover mx-auto mb-5 border-4 border-primary/20"
         />
-        <h1 className="text-2xl sm:text-3xl font-bold">Shoheb Muddhoo</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Mr Muddhoo Shoheb</h1>
         <p className="text-muted-foreground mt-1">Cambridge Computer Science Teacher</p>
       </div>
 
@@ -63,9 +64,9 @@ export default async function AboutPage() {
           <h2 className="text-lg font-bold">Qualifications</h2>
         </div>
         <ul className="space-y-2 text-muted-foreground leading-relaxed">
-          <li>• [Degree/qualification, e.g. BSc Computer Science, PGCE]</li>
-          <li>• [Professional certification or teaching qualification]</li>
-          <li>• Currently teaching Computer Science at [School Name], Mauritius</li>
+          <li>• Degree: BSc Electronics and Computer Science</li>
+          <li>• Professional certification: PGCE</li>
+          <li>• Currently teaching Computer Science at Islamic Cultural College, Port-Louis, Mauritius</li>
         </ul>
       </section>
 
@@ -113,10 +114,12 @@ export default async function AboutPage() {
           <h2 className="text-lg font-bold">Who I teach</h2>
         </div>
         <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-          I teach students preparing for Cambridge IGCSE, O Level and A Level Computer Science —
-          based in Mauritius and internationally, including students in [region examples, e.g. the
-          Gulf, South Asia, Africa]. Classes run live online, with every session recorded for students
-          in different time zones.
+          I teach students preparing for Cambridge IGCSE, O Level and A Level Computer Science in
+          English-medium schools across Mauritius and international Cambridge education markets,
+          including the UAE, Saudi Arabia, Qatar, Kuwait, Oman, Bahrain, Malaysia, Singapore, India,
+          Pakistan, Bangladesh, Sri Lanka, Kenya, Nigeria, Ghana, South Africa and other countries.
+          Classes are delivered live online, with every session recorded so students can learn from
+          any time zone.
         </p>
       </section>
 
@@ -127,37 +130,11 @@ export default async function AboutPage() {
           <h2 className="text-lg font-bold">What a class actually looks like</h2>
         </div>
         <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
-          Live classes run [X minutes] weekly, in small groups so every student gets time to ask
+          Live classes run 90 minutes weekly, in small groups so every student gets time to ask
           questions. Each session works through past-paper style problems and pseudocode/programming
           exercises on-screen, step by step. Recordings, notes and practice questions are published
           straight after — so nothing is missed if a student can&apos;t attend live.
         </p>
-      </section>
-
-      {/* 8. Results */}
-      <section className="mb-14">
-        <div className="flex items-center gap-2 mb-4">
-          <TrendingUp className="w-5 h-5 text-primary" />
-          <h2 className="text-lg font-bold">Results</h2>
-        </div>
-        <p className="text-muted-foreground leading-relaxed text-sm sm:text-base mb-4">
-          [Add specific results here, e.g. "X% of students achieved A*–B over the last 3 series" or
-          named results with permission.]
-        </p>
-        <div className="grid grid-cols-3 gap-3 text-center">
-          <div className="rounded-xl border border-border/60 p-4">
-            <p className="text-2xl font-bold text-primary">[X]+</p>
-            <p className="text-xs text-muted-foreground mt-1">Students taught</p>
-          </div>
-          <div className="rounded-xl border border-border/60 p-4">
-            <p className="text-2xl font-bold text-primary">[X]%</p>
-            <p className="text-xs text-muted-foreground mt-1">A*–B grades</p>
-          </div>
-          <div className="rounded-xl border border-border/60 p-4">
-            <p className="text-2xl font-bold text-primary">15+</p>
-            <p className="text-xs text-muted-foreground mt-1">Years teaching</p>
-          </div>
-        </div>
       </section>
 
       {/* 9. Why Mauritius works for international students */}

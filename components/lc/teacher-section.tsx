@@ -11,7 +11,7 @@ export function TeacherSection() {
           <img
             src="/placeholder-user.jpg"
             alt="Mr Muddhoo Shoheb, Cambridge Computer Science teacher"
-            className="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl object-cover border-4 border-primary/20 shrink-0"
+            className="w-44 h-44 sm:w-56 sm:h-56 rounded-2xl object-cover border-4 border-primary/20 shrink-0"
           />
           <div className="text-center sm:text-left">
             <p className="text-xs font-semibold tracking-[0.15em] text-primary uppercase mb-2">Meet Your Teacher</p>
