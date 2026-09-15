@@ -73,7 +73,7 @@ export default async function ContactPage() {
             <MapPin className="w-5 h-5 text-primary" />
           </div>
           <h3 className="font-semibold mb-1">Location</h3>
-          <p className="text-sm text-muted-foreground">[REGISTERED COMPANY NAME]</p>
+          <p className="text-sm text-muted-foreground">Lesson Computer Ltd</p>
           <p className="text-sm text-muted-foreground">{businessAddress ?? '[FULL REGISTERED ADDRESS]'}, Mauritius</p>
         </div>
       </div>

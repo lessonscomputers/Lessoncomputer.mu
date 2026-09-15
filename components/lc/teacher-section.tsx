@@ -6,14 +6,14 @@ export function TeacherSection() {
   return (
     <section className="py-16 md:py-20 bg-secondary/30 border-b border-border">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-center gap-8 sm:gap-10 bg-card rounded-2xl border border-border/60 lc-shadow p-6 sm:p-10">
+        <div className="flex flex-col sm:flex-row items-stretch bg-card rounded-2xl border border-border/60 lc-shadow overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/Teacher.png"
             alt="Mr Muddhoo Shoheb, Cambridge Computer Science teacher"
-            className="w-44 h-44 sm:w-56 sm:h-56 rounded-2xl object-cover border-4 border-primary/20 shrink-0"
+            className="w-full h-72 sm:w-72 sm:h-auto object-cover shrink-0"
           />
-          <div className="text-center sm:text-left">
+          <div className="p-6 sm:p-10 text-center sm:text-left">
             <p className="text-xs font-semibold tracking-[0.15em] text-primary uppercase mb-2">Meet Your Teacher</p>
             <h2 className="font-serif text-2xl sm:text-3xl font-bold text-foreground mb-2">
               Mr Muddhoo Shoheb — Cambridge Computer Science Teacher
