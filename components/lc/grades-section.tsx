@@ -34,17 +34,15 @@ export function GradesSection({ grades = PLACEHOLDER_GRADES, embedded = false }:
     <section className="py-20 md:py-24 bg-background border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Section header — Boty style */}
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-          <div>
-            <p className="text-xs font-semibold tracking-[0.15em] text-primary uppercase mb-3">Our Curriculum</p>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground leading-tight">
-              Choose your Courses
-            </h2>
-          </div>
+        {/* Section header — centred */}
+        <div className="text-center mb-10">
+          <p className="text-xs font-semibold tracking-[0.15em] text-primary uppercase mb-3">Our Curriculum</p>
+          <h2 className="font-serif text-4xl md:text-5xl font-bold text-foreground leading-tight mb-4">
+            Choose your Courses
+          </h2>
           <Link
             href="/grades"
-            className="hidden sm:flex items-center gap-1.5 text-sm font-medium text-foreground/70 hover:text-primary lc-transition"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/70 hover:text-primary lc-transition"
           >
             View all courses <ArrowRight className="w-3.5 h-3.5" />
           </Link>
@@ -52,11 +50,6 @@ export function GradesSection({ grades = PLACEHOLDER_GRADES, embedded = false }:
 
         {grid}
 
-        <div className="mt-8 text-center sm:hidden">
-          <Link href="/grades" className="text-sm font-medium text-primary hover:underline">
-            View all courses →
-          </Link>
-        </div>
       </div>
     </section>
   )
