@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   // Which grade does this student belong to? (Needed to pick the right cohort.)
   const { data: prof } = await (admin as any)
     .from('profiles')
-    .select('grade_id, parent_whatsapp_sent_at')
+    .select('grade_id, parent_whatsapp_sent_at, full_name')
     .eq('id', user.id)
     .maybeSingle()
   const gradeId = (prof as any)?.grade_id as string | null
@@ -46,6 +46,22 @@ export async function POST(req: NextRequest) {
     const res = await addParentToCurrentCohort(admin, user.id, gradeId, trimmedPhone)
     groupUrl = res?.groupUrl ?? null
     cohortId = res?.cohortId ?? null
+  }
+
+  // Also add to cohorts for every grade the student has an active live subscription —
+  // a student can subscribe to multiple grades, but profiles.grade_id is only one of them.
+  const { data: activeSubs } = await (admin as any)
+    .from('student_subscriptions')
+    .select('package:subscription_packages!package_id(grade_id, package_type)')
+    .eq('student_id', user.id)
+    .eq('status', 'active')
+  const extraGradeIds = [...new Set(
+    ((activeSubs ?? []) as any[])
+      .filter((s: any) => s.package?.package_type === 'live_month' && s.package?.grade_id && s.package.grade_id !== gradeId)
+      .map((s: any) => s.package.grade_id as string)
+  )]
+  for (const gId of extraGradeIds) {
+    await addParentToCurrentCohort(admin, user.id, gId, trimmedPhone)
   }
 
   // Send welcome message — but at most once (don't re-spam on every edit).
