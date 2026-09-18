@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createServiceRoleClient } from '@/lib/supabase/server'
 import { addParentToCurrentCohort } from '@/lib/parent-groups'
-import { sendWhatsAppText } from '@/lib/whatsapp'
+import { sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/whatsapp'
 
 // POST /api/parent-contact  { phone }
 // A student provides their parent's number (mandatory to join live classes). We save it,
@@ -48,15 +48,28 @@ export async function POST(req: NextRequest) {
     cohortId = res?.cohortId ?? null
   }
 
-  // Send the grade's group invite link — but at most once (don't re-spam on every edit).
+  // Send welcome message — but at most once (don't re-spam on every edit).
   const alreadySent = !!(prof as any)?.parent_whatsapp_sent_at
-  if (groupUrl && !alreadySent) {
-    const sent = await sendWhatsAppText(
+  if (!alreadySent) {
+    const studentName = (prof as any)?.full_name ?? 'your child'
+
+    // Send the approved welcome template first.
+    const welcome = await sendWhatsAppTemplate(
       trimmedPhone,
-      `Hello! Your child has enrolled in live classes at Lesson Computer. ` +
-      `Join the parents' WhatsApp group for their class to stay updated:\n\n${groupUrl}`
+      'sign_up_messages',
+      'en',
+      [studentName]
     )
-    if (sent.ok) {
+
+    // If there's also a group invite link, send it as a follow-up text.
+    if (welcome.ok && groupUrl) {
+      await sendWhatsAppText(
+        trimmedPhone,
+        `Join the parents' WhatsApp group for your child's class to stay updated:\n\n${groupUrl}`
+      )
+    }
+
+    if (welcome.ok) {
       const now = new Date().toISOString()
       await (admin as any).from('profiles').update({ parent_whatsapp_sent_at: now }).eq('id', user.id)
       if (cohortId) {
