@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createServiceRoleClient } from '@/lib/supabase/server'
 import { addParentToCurrentCohort } from '@/lib/parent-groups'
-import { sendWhatsAppText, sendWhatsAppTemplate } from '@/lib/whatsapp'
+import { sendWhatsAppTemplate } from '@/lib/whatsapp'
 
 // POST /api/parent-contact  { phone }
 // A student provides their parent's number (mandatory to join live classes). We save it,
@@ -35,10 +35,11 @@ export async function POST(req: NextRequest) {
   // Which grade does this student belong to? (Needed to pick the right cohort.)
   const { data: prof } = await (admin as any)
     .from('profiles')
-    .select('grade_id, parent_whatsapp_sent_at, full_name')
+    .select('grade_id, parent_whatsapp_sent_at, full_name, grade:grades!grade_id(name)')
     .eq('id', user.id)
     .maybeSingle()
   const gradeId = (prof as any)?.grade_id as string | null
+  const gradeName = ((prof as any)?.grade as { name: string } | null)?.name ?? ''
 
   let groupUrl: string | null = null
   let cohortId: string | null = null
@@ -64,26 +65,18 @@ export async function POST(req: NextRequest) {
     await addParentToCurrentCohort(admin, user.id, gId, trimmedPhone)
   }
 
-  // Send welcome message — but at most once (don't re-spam on every edit).
+  // Send invitation message — but at most once (don't re-spam on every edit).
   const alreadySent = !!(prof as any)?.parent_whatsapp_sent_at
   if (!alreadySent) {
     const studentName = (prof as any)?.full_name ?? 'your child'
 
-    // Send the approved welcome template first.
+    // parent_invitation template: {{1}} student_name, {{2}} grade_classes, {{3}} whats_app_url
     const welcome = await sendWhatsAppTemplate(
       trimmedPhone,
-      'sign_up_messages',
+      'parent_invitation',
       'en',
-      [studentName]
+      [studentName, gradeName, groupUrl ?? '']
     )
-
-    // If there's also a group invite link, send it as a follow-up text.
-    if (welcome.ok && groupUrl) {
-      await sendWhatsAppText(
-        trimmedPhone,
-        `Join the parents' WhatsApp group for your child's class to stay updated:\n\n${groupUrl}`
-      )
-    }
 
     if (welcome.ok) {
       const now = new Date().toISOString()
