@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-auth'
-import { sendWhatsAppText, isWhatsAppConfigured } from '@/lib/whatsapp'
+import { sendWhatsAppTemplate, isWhatsAppConfigured } from '@/lib/whatsapp'
 
 // POST /api/admin/parent-groups/send-report  { studentId, message }
 // Admin-only. Sends an individual report PRIVATELY to that student's parent (never to the
@@ -27,7 +27,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'This student has no parent phone number on file.' }, { status: 400 })
   }
 
-  const result = await sendWhatsAppText(phone, message.trim())
+  // Use the approved parent_report template:
+  //   {{1}} = Parent_Name  (we don't store the parent's name, so use "Parent")
+  //   {{2}} = report message text
+  const result = await sendWhatsAppTemplate(phone, 'parent_report', 'en', ['Parent', message.trim()])
+  console.log('[send-report] WhatsApp result for', phone, result)
   if (!result.ok) {
     return NextResponse.json({ error: result.error ?? 'Could not send the report.' }, { status: 502 })
   }
