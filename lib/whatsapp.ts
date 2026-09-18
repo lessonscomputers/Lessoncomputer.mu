@@ -15,6 +15,69 @@ export function isWhatsAppConfigured(): boolean {
   return !!(process.env.WHATSAPP_PHONE_NUMBER_ID && process.env.WHATSAPP_ACCESS_TOKEN)
 }
 
+// Send a pre-approved Meta template message. `variables` are the positional body parameters
+// in the order they appear in the template (e.g. {{customer_name}} is index 0).
+export async function sendWhatsAppTemplate(
+  to: string,
+  templateName: string,
+  languageCode: string,
+  variables: string[]
+): Promise<WhatsAppResult> {
+  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID
+  const accessToken = process.env.WHATSAPP_ACCESS_TOKEN
+  if (!phoneNumberId || !accessToken) {
+    return { ok: false, error: 'WhatsApp is not configured' }
+  }
+
+  const digits = normalizeWhatsAppDigits(to)
+  if (digits.length < 7) return { ok: false, error: 'Invalid phone number' }
+
+  const components = variables.length > 0
+    ? [{ type: 'body', parameters: variables.map((v) => ({ type: 'text', text: v })) }]
+    : []
+
+  try {
+    const res = await fetch(
+      `https://graph.facebook.com/v19.0/${phoneNumberId}/messages`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          to: digits,
+          type: 'template',
+          template: {
+            name: templateName,
+            language: { code: languageCode },
+            ...(components.length > 0 && { components }),
+          },
+        }),
+      }
+    )
+
+    if (!res.ok) {
+      const detail = await res.text().catch(() => '')
+      console.error('[whatsapp] template API error', res.status, detail)
+      if (res.status === 401 || res.status === 403) {
+        return { ok: false, error: 'WhatsApp access token is invalid or expired — update WHATSAPP_ACCESS_TOKEN.' }
+      }
+      let metaMsg = ''
+      try {
+        const e = (JSON.parse(detail) as any)?.error
+        if (e?.message) metaMsg = e.code ? `(#${e.code}) ${e.message}` : e.message
+      } catch { /* body was not JSON */ }
+      return { ok: false, error: metaMsg ? `WhatsApp: ${metaMsg}` : `WhatsApp API returned ${res.status}` }
+    }
+    return { ok: true }
+  } catch (err) {
+    console.error('[whatsapp] template send failed', err)
+    return { ok: false, error: 'Network error contacting WhatsApp' }
+  }
+}
+
 export async function sendWhatsAppText(to: string, body: string): Promise<WhatsAppResult> {
   const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID
   const accessToken = process.env.WHATSAPP_ACCESS_TOKEN
