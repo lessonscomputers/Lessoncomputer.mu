@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
   }
 
   const result = await sendWhatsAppText(phone, message.trim())
+  console.log('[send-report] WhatsApp result for', phone, result)
   if (!result.ok) {
     return NextResponse.json({ error: result.error ?? 'Could not send the report.' }, { status: 502 })
   }
