@@ -67,16 +67,20 @@ export async function POST(req: NextRequest) {
 
   // Send invitation message — but at most once (don't re-spam on every edit).
   const alreadySent = !!(prof as any)?.parent_whatsapp_sent_at
-  if (!alreadySent) {
+  if (alreadySent) {
+    console.log('[parent-contact] skipping WhatsApp send — already sent for student:', user.id)
+  } else {
     const studentName = (prof as any)?.full_name ?? 'your child'
 
     // parent_invitation template: {{1}} student_name, {{2}} grade_classes, {{3}} whats_app_url
+    console.log('[parent-contact] sending parent_invitation to', trimmedPhone, { studentName, gradeName, groupUrl })
     const welcome = await sendWhatsAppTemplate(
       trimmedPhone,
       'parent_invitation',
       'en',
       [studentName, gradeName, groupUrl ?? '']
     )
+    console.log('[parent-contact] WhatsApp result:', welcome)
 
     if (welcome.ok) {
       const now = new Date().toISOString()
@@ -88,6 +92,8 @@ export async function POST(req: NextRequest) {
           .eq('parent_group_id', cohortId)
           .eq('student_id', user.id)
       }
+    } else {
+      console.error('[parent-contact] WhatsApp send failed:', welcome.error)
     }
   }
 
