@@ -263,16 +263,19 @@ function GradeCohortCard({
 }
 
 function BroadcastDialog({ cohort, gradeName, onClose }: { cohort: Cohort; gradeName: string; onClose: () => void }) {
-  const [message, setMessage] = useState('')
+  const [message1, setMessage1] = useState('')
+  const [message2, setMessage2] = useState('')
+  const [message3, setMessage3] = useState('')
+  const [date, setDate] = useState('')
   const [sending, setSending] = useState(false)
   const count = cohort.members.filter((m) => (m.parentPhone ?? '').length >= 7).length
 
   async function send() {
-    if (!message.trim()) return toast.error('Message cannot be empty.')
+    if (!message1.trim() && !message2.trim() && !message3.trim()) return toast.error('At least one message field is required.')
     setSending(true)
     const res = await fetch('/api/admin/parent-groups/broadcast', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cohortId: cohort.id, message }),
+      body: JSON.stringify({ cohortId: cohort.id, message1, message2, message3, date }),
     })
     setSending(false)
     const data = await res.json().catch(() => ({}))
@@ -282,12 +285,29 @@ function BroadcastDialog({ cohort, gradeName, onClose }: { cohort: Cohort; grade
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent>
+      <DialogContent className="max-w-lg">
         <DialogHeader>
           <DialogTitle>Broadcast to {gradeName} parents</DialogTitle>
           <DialogDescription>Sends privately (1-to-1) to {count} parent{count === 1 ? '' : 's'} with a number in this cohort.</DialogDescription>
         </DialogHeader>
-        <Textarea rows={6} placeholder="Type your message to all parents…" value={message} onChange={(e) => setMessage(e.target.value)} />
+        <div className="space-y-3">
+          <div className="space-y-1">
+            <Label className="text-xs">Message 1 <span className="text-muted-foreground">{'{{1}}'}</span></Label>
+            <Textarea rows={2} placeholder="e.g. Maths homework: exercises 1–5, page 42" value={message1} onChange={(e) => setMessage1(e.target.value)} />
+          </div>
+          <div className="space-y-1">
+            <Label className="text-xs">Message 2 <span className="text-muted-foreground">{'{{2}}'}</span></Label>
+            <Textarea rows={2} placeholder="e.g. English: read chapter 3 and answer questions" value={message2} onChange={(e) => setMessage2(e.target.value)} />
+          </div>
+          <div className="space-y-1">
+            <Label className="text-xs">Message 3 <span className="text-muted-foreground">{'{{3}}'}</span></Label>
+            <Textarea rows={2} placeholder="e.g. Science: complete the worksheet" value={message3} onChange={(e) => setMessage3(e.target.value)} />
+          </div>
+          <div className="space-y-1">
+            <Label className="text-xs">Date <span className="text-muted-foreground">{'{{4}}'}</span></Label>
+            <Input placeholder="e.g. Week of 23 Sep 2026" value={date} onChange={(e) => setDate(e.target.value)} />
+          </div>
+        </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
           <Button onClick={send} disabled={sending}>
