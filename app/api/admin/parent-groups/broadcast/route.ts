@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/admin-auth'
-import { sendWhatsAppText, isWhatsAppConfigured } from '@/lib/whatsapp'
+import { sendWhatsAppTemplate, isWhatsAppConfigured } from '@/lib/whatsapp'
 
 export const maxDuration = 60
 
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = message.trim()
-  const results = await Promise.allSettled(phones.map((p) => sendWhatsAppText(p, body)))
+  const results = await Promise.allSettled(phones.map((p) => sendWhatsAppTemplate(p, 'parent_message', 'en', [body])))
   const sent = results.filter((r) => r.status === 'fulfilled' && (r.value as any).ok).length
   const failed = phones.length - sent
 
