@@ -72,11 +72,11 @@ export async function POST(req: NextRequest) {
   } else {
     const studentName = (prof as any)?.full_name ?? 'your child'
 
-    // parent_invitation template: {{1}} student_name, {{2}} grade_classes, {{3}} whats_app_url
-    console.log('[parent-contact] sending parent_invitation to', trimmedPhone, { studentName, gradeName, groupUrl })
+    // parent_invitation1 template: {{1}} student_name, {{2}} grade_classes, {{3}} whats_app_url
+    console.log('[parent-contact] sending parent_invitation1 to', trimmedPhone, { studentName, gradeName, groupUrl })
     const welcome = await sendWhatsAppTemplate(
       trimmedPhone,
-      'parent_invitation',
+      'parent_invitation1',
       'en',
       [studentName, gradeName, groupUrl ?? '']
     )
